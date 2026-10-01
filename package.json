@@ -1,0 +1,11 @@
+{
+  "name": "automod",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI content moderation pipeline for user-generated images, built on Cloudinary.",
+  "scripts": {
+    "dev:frontend": "python -m http.server 3000 --directory frontend",
+    "dev:backend": "cd backend && python -m uvicorn main:app --reload --port 8000"
+  },
+  "license": "MIT"
+}

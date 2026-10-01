@@ -1,0 +1,67 @@
+:root {
+  --bg: #0a0e1a;
+  --card: #1a1f2e;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --text: #e8ebf4;
+  --muted: #8f98b3;
+  --purple: #8b5cf6;
+  --cyan: #06b6d4;
+  --gradient: linear-gradient(135deg, var(--purple), var(--cyan));
+  --safe: #22c55e;
+  --unsafe: #ef4444;
+  --warn: #f59e0b;
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  background-image: radial-gradient(60rem 30rem at 50% -10%, rgba(139, 92, 246, 0.18), transparent 70%);
+  background-repeat: no-repeat;
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2 { margin: 0; line-height: 1.15; }
+h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 1rem; }
+p { margin: 0 0 0.5rem; }
+img { max-width: 100%; display: block; }
+
+.container { width: min(880px, 100% - 2rem); margin: 0 auto; padding-bottom: 3rem; }
+
+.site-header { display: flex; align-items: center; gap: 0.6rem; width: min(880px, 100% - 2rem); margin: 0 auto; padding: 1.25rem 0; }
+.brand { font-weight: 700; font-size: 1.05rem; }
+
+.hero { text-align: center; padding: 2.5rem 0 2rem; }
+.hero h1 {
+  font-size: clamp(2.8rem, 9vw, 4.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 1rem 0 0.75rem;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.subtitle { color: var(--muted); font-size: clamp(1rem, 2.5vw, 1.2rem); max-width: 34rem; margin: 0 auto; }
+
+.muted { color: var(--muted); font-size: 0.9rem; }
+
+.results { display: grid; gap: 1.25rem; }
+.card + .card, .card + .results { margin-top: 1.25rem; }
+
+.site-footer { text-align: center; padding: 2rem 1rem 3rem; }
+
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

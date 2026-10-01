@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoMod | AI content moderation for user-generated images</title>
+  <meta name="description" content="Upload an image and get an AI moderation verdict, auto-tags, and a cleaned-up version, powered by Cloudinary.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <header class="site-header">
+    <img src="assets/logo.svg" alt="" width="32" height="32">
+    <span class="brand">AutoMod</span>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="badge">Powered by Cloudinary AI Skills Pack</span>
+      <h1>AutoMod</h1>
+      <p class="subtitle">AI Content Moderation Pipeline for User-Generated Images</p>
+    </section>
+
+    <section class="card" aria-labelledby="upload-title">
+      <h2 id="upload-title">Upload an image</h2>
+      <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose an image or drop one here">
+        <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+        <div id="dropzone-empty" class="dropzone-empty">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          <p><strong>Drop an image here</strong> or click to browse</p>
+          <p class="muted">JPG, PNG, WebP or GIF, up to 10 MB</p>
+        </div>
+        <div id="preview" class="preview" hidden>
+          <img id="preview-img" alt="Selected image preview">
+          <div class="preview-meta">
+            <span id="preview-name"></span>
+            <span id="preview-size" class="muted"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="error" class="alert" role="alert" hidden></div>
+
+      <div id="progress" class="progress" hidden>
+        <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+        <p id="progress-label" class="muted" role="status" aria-live="polite"></p>
+      </div>
+
+      <button id="process-btn" class="btn btn-primary" disabled>
+        <span class="spinner" hidden></span>
+        <span class="btn-label">Process image</span>
+      </button>
+    </section>
+
+    <div id="results" class="results" hidden>
+      <section class="card" aria-labelledby="mod-title">
+        <h2 id="mod-title">Moderation result</h2>
+        <div class="verdict-row">
+          <div id="verdict" class="verdict"></div>
+          <p id="verdict-detail" class="muted"></p>
+        </div>
+        <ul id="labels" class="label-list"></ul>
+      </section>
+
+      <section class="card" aria-labelledby="tags-title">
+        <h2 id="tags-title">Auto-tags</h2>
+        <p class="muted">Select a tag to copy it.</p>
+        <div id="tags" class="chips"></div>
+      </section>
+
+      <section class="card" aria-labelledby="compare-title">
+        <h2 id="compare-title">Before and after</h2>
+        <div class="compare">
+          <figure>
+            <div class="frame"><img id="img-before" alt="Original upload"></div>
+            <figcaption>Original</figcaption>
+          </figure>
+          <figure>
+            <div class="frame checker"><img id="img-after" alt="Processed image with background removed and smart crop"></div>
+            <figcaption>Background removed and smart cropped</figcaption>
+          </figure>
+        </div>
+        <a id="download" class="btn btn-secondary" href="#" download>Download processed image</a>
+      </section>
+
+      <section class="card" aria-labelledby="tech-title">
+        <h2 id="tech-title">Technical details</h2>
+        <details>
+          <summary>Processed image URL</summary>
+          <pre id="tech-url" class="code"></pre>
+        </details>
+        <details>
+          <summary>Transformations applied</summary>
+          <ul id="tech-transforms" class="transform-list"></ul>
+        </details>
+        <details>
+          <summary>Raw JSON response</summary>
+          <pre id="tech-json" class="code"></pre>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p class="muted">Built for the Pixels to Products Hackathon (HackIndia × Cloudinary), Track 1: AI Media Pipelines.</p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
