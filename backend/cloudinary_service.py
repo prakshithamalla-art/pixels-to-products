@@ -13,8 +13,9 @@ import cloudinary.uploader
 import cloudinary.utils
 
 # Delivery transformation for the "after" image.
-# NOTE: cloudinary-python expects a transformation string here, not a list of dicts.
-PROCESSED_TRANSFORMATION = "e_background_removal/c_fill,g_auto,w_800,h_800/f_auto,q_auto"
+# NOTE: leading "/" tells Cloudinary this is a chain of transformations,
+# not a named transformation. Without it, Cloudinary prepends "t_" and breaks the URL.
+PROCESSED_TRANSFORMATION = "/e_background_removal/c_fill,g_auto,w_800,h_800/f_auto,q_auto"
 
 TRANSFORMATIONS_APPLIED = [
     {"param": "moderation=aws_rek", "purpose": "AI content moderation (AWS Rekognition)"},
@@ -101,7 +102,6 @@ def analyze_image(file_bytes: bytes) -> dict:
         "moderation": "aws_rek",
         "categorization": "aws_rek_tagging",
         "auto_tagging": 0.6,
-        # Pass the transformation string directly (not wrapped in a list)
         "eager": PROCESSED_TRANSFORMATION,
         "eager_async": False,
     }
