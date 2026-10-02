@@ -10,12 +10,11 @@ import os
 import cloudinary
 import cloudinary.exceptions
 import cloudinary.uploader
-import cloudinary.utils
 
-# Delivery transformation for the "after" image.
-# NOTE: leading "/" tells Cloudinary this is a chain of transformations,
-# not a named transformation. Without it, Cloudinary prepends "t_" and breaks the URL.
-PROCESSED_TRANSFORMATION = "/e_background_removal/c_fill,g_auto,w_800,h_800/f_auto,q_auto"
+# Transformation string used for both the eager upload and the delivery URL.
+# NO leading slash (Cloudinary treats "/" as a named-transformation marker and
+# prepends "t_" to it, which breaks the URL).
+TRANSFORMATION = "e_background_removal/c_fill,g_auto,w_800,h_800/f_auto,q_auto"
 
 TRANSFORMATIONS_APPLIED = [
     {"param": "moderation=aws_rek", "purpose": "AI content moderation (AWS Rekognition)"},
@@ -102,7 +101,7 @@ def analyze_image(file_bytes: bytes) -> dict:
         "moderation": "aws_rek",
         "categorization": "aws_rek_tagging",
         "auto_tagging": 0.6,
-        "eager": PROCESSED_TRANSFORMATION,
+        "eager": TRANSFORMATION,
         "eager_async": False,
     }
     preset = os.getenv("CLOUDINARY_UPLOAD_PRESET")
@@ -114,13 +113,15 @@ def analyze_image(file_bytes: bytes) -> dict:
     except cloudinary.exceptions.Error as exc:
         raise MediaError(str(exc)) from exc
 
-    processed_url, _ = cloudinary.utils.cloudinary_url(
-        result["public_id"],
-        transformation=PROCESSED_TRANSFORMATION,
-        secure=True,
-        resource_type="image",
-        type=result.get("type", "upload"),
-        version=result.get("version"),
+    # Build the processed URL manually so Cloudinary's transformation parser
+    # cannot mis-read it and inject "t_" / "fl_attachment".
+    cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME")
+    version = result.get("version")
+    public_id = result["public_id"]
+    processed_url = (
+        f"https://res.cloudinary.com/{cloud_name}"
+        f"/image/upload/{TRANSFORMATION}"
+        f"/v{version}/{public_id}"
     )
 
     moderation = parse_moderation(result)
@@ -129,7 +130,7 @@ def analyze_image(file_bytes: bytes) -> dict:
         "tags": parse_tags(result),
         "original_url": result.get("secure_url"),
         "processed_url": processed_url,
-        "public_id": result.get("public_id"),
+        "public_id": public_id,
         "width": result.get("width"),
         "height": result.get("height"),
         "format": result.get("format"),
