@@ -1,5 +1,10 @@
 # AutoMod
 
+🌐 **Live Demo:** https://glittery-cajeta-22a57a.netlify.app
+💻 **Backend API:** https://pixels-to-products.onrender.com
+
+---
+
 **AI content moderation for user-generated images, built on Cloudinary.**
 Built for the Pixels to Products Hackathon (HackIndia × Cloudinary), Track 1: AI Media Pipelines.
 
